@@ -1,4 +1,5 @@
 import { ModeToggle } from "@/components/mode-toggle";
+import SignIn from "@/components/sign-in";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -9,8 +10,9 @@ export default function Navbar() {
                     SongList
                 </Link>
             </div>
-            <div className="h-full aspect-square">
+            <div className="flex gap-3">
                 <ModeToggle />
+                <SignIn /> 
             </div>
         </div>
     );
