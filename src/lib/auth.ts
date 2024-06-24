@@ -8,4 +8,7 @@ import Discord from "next-auth/providers/discord";
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	adapter: DrizzleAdapter(db),
 	providers: [Google, Github, Discord],
+    pages: {
+        signIn: "/login"
+    }
 });
