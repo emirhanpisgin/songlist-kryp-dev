@@ -1,6 +1,6 @@
 {
-  "id": "5854146c-3e04-4ca4-994e-4129b941a1e1",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "c9547247-0f4a-486e-ae26-b89edf2cfe91",
+  "prevId": "5854146c-3e04-4ca4-994e-4129b941a1e1",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -212,6 +212,13 @@
           "primaryKey": false,
           "notNull": true
         },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
         "userId": {
           "name": "userId",
           "type": "text",
@@ -332,6 +339,13 @@
           "type": "json[3]",
           "primaryKey": false,
           "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},

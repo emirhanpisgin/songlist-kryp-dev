@@ -1,12 +1,7 @@
-import { boolean, timestamp, pgTable, text, primaryKey, integer } from "drizzle-orm/pg-core";
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { boolean, timestamp, pgTable, text, primaryKey, integer, json, real } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
-
-const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle";
-const pool = postgres(connectionString, { max: 1 });
-
-export const db = drizzle(pool);
+import { Image } from "../types/songs";
+import { relations, sql } from "drizzle-orm";
 
 export const users = pgTable("user", {
 	id: text("id")
@@ -84,3 +79,42 @@ export const authenticators = pgTable(
 		}),
 	})
 );
+
+export const songs = pgTable("song", {
+	id: text("id").primaryKey().notNull(),
+	name: text("name").notNull(),
+	authorId: text("authorId").notNull(),
+	artists: text("artists").array().notNull(),
+	images: json("image").$type<Image>().array(3).notNull(),
+	createdAt: timestamp("createdAt").notNull().defaultNow(),
+});
+
+export const songsRelations = relations(songs, ({ many }) => ({
+	ratings: many(ratings),
+}));
+
+export const ratings = pgTable("rating", {
+	id: text("id")
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	rating: real("rating").notNull(),
+	comment: text("comment").notNull(),
+	createdAt: timestamp("createdAt").notNull().defaultNow(),
+	userId: text("userId")
+		.notNull()
+		.references(() => users.id, { onDelete: "cascade" }),
+	songId: text("songId")
+		.notNull()
+		.references(() => songs.id, { onDelete: "cascade" }),
+});
+
+export const ratingsRelations = relations(ratings, ({ one }) => ({
+	song: one(songs, {
+		fields: [ratings.songId],
+		references: [songs.id],
+	}),
+    user: one(users, {
+        fields: [ratings.userId],
+        references: [users.id]
+    })
+}));
