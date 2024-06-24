@@ -23,6 +23,11 @@ import { timePassed } from "@/lib/utils";
 
 export default async function Songs() {
     const session = await auth();
+    
+    if (!session) {
+        redirect("/login")
+    }
+
     const songList = await db.query.songs.findMany({
         with: {
             ratings: {
@@ -32,10 +37,6 @@ export default async function Songs() {
             },
         }
     });
-
-    if (!session) {
-        redirect("/login")
-    }
 
     return (
         <main>
