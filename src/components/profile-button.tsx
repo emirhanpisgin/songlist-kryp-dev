@@ -22,18 +22,13 @@ export default function ProfileButton({
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="p-3 space-y-1">
+            <DropdownMenuContent className="p-3 flex items-center gap-3">
                 <div className="text-center">
                     {data.user?.name}
                 </div>
-                <div className="flex gap-1">
-                    <Link href={"/profile"} className={buttonVariants({ variant: "outline", size: "icon"})}>
-                        <ListMusic />
-                    </Link>
-                    <Button onClick={() => signOut()} size={"icon"} variant={"outline"}>
-                        <LogOut />
-                    </Button>
-                </div>
+                <Button onClick={() => signOut()} size={"icon"} variant={"outline"}>
+                    <LogOut />
+                </Button>
             </DropdownMenuContent>
         </DropdownMenu>
     );
