@@ -1,0 +1,1 @@
+ALTER TABLE "song" ADD COLUMN "uri" text NOT NULL;

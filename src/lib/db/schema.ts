@@ -87,6 +87,7 @@ export const songs = pgTable("song", {
 	artists: text("artists").array().notNull(),
 	images: json("image").$type<Image>().array(3).notNull(),
 	createdAt: timestamp("createdAt").notNull().defaultNow(),
+	uri: text("uri").notNull(),
 });
 
 export const songsRelations = relations(songs, ({ many }) => ({
@@ -113,8 +114,8 @@ export const ratingsRelations = relations(ratings, ({ one }) => ({
 		fields: [ratings.songId],
 		references: [songs.id],
 	}),
-    user: one(users, {
-        fields: [ratings.userId],
-        references: [users.id]
-    })
+	user: one(users, {
+		fields: [ratings.userId],
+		references: [users.id],
+	}),
 }));

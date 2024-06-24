@@ -33,6 +33,7 @@ export async function getOrSaveSong(item: Item, userId: string) {
 				authorId: userId,
 				images: item.album.images,
 				name: item.name,
+				uri: item.uri,
 			})
 			.returning();
 
