@@ -1,9 +1,9 @@
 "use client"
 import { LogIn } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { buttonVariants } from "@/components/ui/button"
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import ProfileButton from "./profile-button";
 
 export default function SignIn() {
     const { data, status } = useSession();
@@ -16,10 +16,5 @@ export default function SignIn() {
         )
     }
 
-    return (
-        <Avatar>
-            <AvatarImage src={data.user?.image!} />
-            <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-    )
+    return <ProfileButton data={data} />;
 }
