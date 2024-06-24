@@ -30,7 +30,7 @@ export default function SearchSongDialog({ setSelectedSong }: SearchSongDialogPr
                 Şarkı Ara
             </DialogTitle>
             <DialogDescription>
-                Aramaya başlamak için şarkının adını yazıp "Ara" butonuna bas.
+                Aramaya başlamak için şarkının adını yazıp &quot;Ara&quot; butonuna bas.
             </DialogDescription>
             <form className="flex gap-5" action={handleSearchSubmit}>
                 <Input required maxLength={20} minLength={3} value={searchInput} onChange={(e) => setSearchInput(e.target.value)} placeholder="Şarkı adı..." />
