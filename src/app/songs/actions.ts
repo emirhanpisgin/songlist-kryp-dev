@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { getOrSaveSong, searchSong, searchSongById } from "@/lib/helpers/songs";
 import { Item } from "@/lib/types/songs";
 import { db } from "@/lib/db";
-import { ratings } from "@/lib/db/schema";
+import { ratings, songs } from "@/lib/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq, and } from "drizzle-orm";
 
@@ -53,6 +53,12 @@ export async function addRatingAction(songId: string, comment: string, score: nu
 
 		if (!session) throw "Unauthorized";
 
+        const song = await db.select().from(songs).where(eq(songs.id, songId));
+
+        if(!song.length) {
+            return "Seni gidi fındıkkıran";
+        }
+
 		const [rating] = await db
 			.select()
 			.from(ratings)
@@ -61,6 +67,8 @@ export async function addRatingAction(songId: string, comment: string, score: nu
 		if (rating) {
 			return "Her şarkıyı sadece bir kere puanlayabilirsiniz";
 		}
+
+        
 
 		await db.insert(ratings).values({
 			comment,
