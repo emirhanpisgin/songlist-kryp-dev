@@ -22,7 +22,7 @@ export default function RateSongDialog({ selectedSong, setSelectedSong, setOpen 
         startTransition(async () => {
             const comment = formData.get("comment")!.toString();
             const score = +formData.get("score")!;
-            const result = await rateSongAction(selectedSong, comment, score);
+            const result = await rateSongAction(selectedSong.id, comment, score);
 
             toast(result);
             setSelectedSong(undefined);

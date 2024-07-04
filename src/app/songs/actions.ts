@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { getOrSaveSong, searchSong } from "@/lib/helpers/songs";
+import { getOrSaveSong, searchSong, searchSongById } from "@/lib/helpers/songs";
 import { Item } from "@/lib/types/songs";
 import { db } from "@/lib/db";
 import { ratings } from "@/lib/db/schema";
@@ -18,11 +18,15 @@ export async function searchSongAction(query: string) {
 	return searchData as Item[];
 }
 
-export async function rateSongAction(item: Item, comment: string, score: number) {
+export async function rateSongAction(itemId: string, comment: string, score: number) {
 	try {
 		const session = await auth();
 
 		if (!session) throw "Unauthorized";
+
+        const item = await searchSongById(itemId);
+
+        if (!item) throw "";
 
 		const isNew = await getOrSaveSong(item, session.user?.id!);
 

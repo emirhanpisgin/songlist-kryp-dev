@@ -21,6 +21,22 @@ export async function searchSong(query: string) {
 	return data.tracks.items;
 }
 
+export async function searchSongById(id: string): Promise<Item> {
+    const { access_token } = await getAccessToken();
+
+    const encodedQuery = encodeURIComponent(id);
+
+    const result = await fetch(`https://api.spotify.com/v1/tracks/${encodedQuery}`, {
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
+
+    const data = await result.json();
+
+    return data;
+}
+
 export async function getOrSaveSong(item: Item, userId: string) {
 	const [song] = await db.select().from(songs).where(eq(songs.id, item.id)).limit(1);
 
