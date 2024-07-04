@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { saveSong, searchSong, searchSongById } from "@/lib/helpers/songs";
+import { getOrSaveSong, searchSong, searchSongById } from "@/lib/helpers/songs";
 import { Item } from "@/lib/types/songs";
 import { db } from "@/lib/db";
 import { ratings, songs } from "@/lib/db/schema";
@@ -28,7 +28,11 @@ export async function rateSongAction(itemId: string, comment: string, score: num
 
 		if (!item) throw "";
 
-		const isNew = await saveSong(item, session.user?.id!);
+		const isNew = await getOrSaveSong(item, session.user?.id!);
+
+		if (!isNew) {
+			throw "";
+		}
 
 		await db.insert(ratings).values({
 			comment,
@@ -39,7 +43,7 @@ export async function rateSongAction(itemId: string, comment: string, score: num
 
 		revalidatePath("/");
 
-		return isNew ? "Şarkı ve puanlamanız başarıyla eklendi." : "Şarkı daha önce eklenmiş, puanlamanız eklendi.";
+		return "Şarkı ve puanlamanız başarıyla eklendi.";
 	} catch (err) {
 		console.log(err);
 

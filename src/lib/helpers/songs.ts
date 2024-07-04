@@ -22,33 +22,39 @@ export async function searchSong(query: string) {
 }
 
 export async function searchSongById(id: string): Promise<Item> {
-	const { access_token } = await getAccessToken();
+    const { access_token } = await getAccessToken();
 
-	const encodedQuery = encodeURIComponent(id);
+    const encodedQuery = encodeURIComponent(id);
 
-	const result = await fetch(`https://api.spotify.com/v1/tracks/${encodedQuery}`, {
-		headers: {
-			Authorization: `Bearer ${access_token}`,
-		},
-	});
+    const result = await fetch(`https://api.spotify.com/v1/tracks/${encodedQuery}`, {
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    });
 
-	const data = await result.json();
+    const data = await result.json();
 
-	return data;
+    return data;
 }
 
-export async function saveSong(item: Item, userId: string) {
-	await db
-		.insert(songs)
-		.values({
-			id: item.id,
-			artists: item.artists.map((artist) => artist.name),
-			authorId: userId,
-			images: item.album.images,
-			name: item.name,
-			uri: item.uri,
-		})
-		.returning();
+export async function getOrSaveSong(item: Item, userId: string) {
+	const [song] = await db.select().from(songs).where(eq(songs.id, item.id)).limit(1);
 
-	return true;
+	if (!song) {
+		await db
+			.insert(songs)
+			.values({
+				id: item.id,
+				artists: item.artists.map((artist) => artist.name),
+				authorId: userId,
+				images: item.album.images,
+				name: item.name,
+				uri: item.uri,
+			})
+			.returning();
+
+		return true;
+	}
+
+	return false;
 }
