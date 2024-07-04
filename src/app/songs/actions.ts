@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { getOrSaveSong, searchSong, searchSongById } from "@/lib/helpers/songs";
+import { saveSong, searchSong, searchSongById } from "@/lib/helpers/songs";
 import { Item } from "@/lib/types/songs";
 import { db } from "@/lib/db";
 import { ratings, songs } from "@/lib/db/schema";
@@ -22,13 +22,13 @@ export async function rateSongAction(itemId: string, comment: string, score: num
 	try {
 		const session = await auth();
 
-		if (!session) throw "Unauthorized";
+		if (!session || !session.user) throw "Unauthorized";
 
 		const item = await searchSongById(itemId);
 
 		if (!item) throw "";
 
-		const isNew = await getOrSaveSong(item, session.user?.id!);
+		const isNew = await saveSong(item, session.user?.id!);
 
 		await db.insert(ratings).values({
 			comment,
@@ -51,7 +51,7 @@ export async function addRatingAction(songId: string, comment: string, score: nu
 	try {
 		const session = await auth();
 
-		if (!session) throw "Unauthorized";
+		if (!session || !session.user) throw "Unauthorized";
 
 		const song = await db.select().from(songs).where(eq(songs.id, songId));
 
