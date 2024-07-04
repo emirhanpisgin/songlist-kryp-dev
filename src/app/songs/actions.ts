@@ -24,9 +24,9 @@ export async function rateSongAction(itemId: string, comment: string, score: num
 
 		if (!session) throw "Unauthorized";
 
-        const item = await searchSongById(itemId);
+		const item = await searchSongById(itemId);
 
-        if (!item) throw "";
+		if (!item) throw "";
 
 		const isNew = await getOrSaveSong(item, session.user?.id!);
 
@@ -53,22 +53,20 @@ export async function addRatingAction(songId: string, comment: string, score: nu
 
 		if (!session) throw "Unauthorized";
 
-        const song = await db.select().from(songs).where(eq(songs.id, songId));
+		const song = await db.select().from(songs).where(eq(songs.id, songId));
 
-        if(!song.length) {
-            return "Seni gidi fındıkkıran";
-        }
+		if (!song.length) {
+			return "Seni gidi fındıkkıran";
+		}
 
-		const [rating] = await db
+		const userRating = await db
 			.select()
 			.from(ratings)
 			.where(and(eq(ratings.songId, songId), eq(ratings.userId, session.user?.id!)));
 
-		if (rating) {
+		if (userRating.length) {
 			return "Her şarkıyı sadece bir kere puanlayabilirsiniz";
 		}
-
-        
 
 		await db.insert(ratings).values({
 			comment,
