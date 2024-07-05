@@ -22,7 +22,7 @@ export async function rateSongAction(itemId: string, comment: string, score: num
 	try {
 		const session = await auth();
 
-		if (!session || !session.user) throw "Unauthorized";
+		if (!session) throw "Unauthorized";
 
 		const item = await searchSongById(itemId);
 
@@ -55,7 +55,7 @@ export async function addRatingAction(songId: string, comment: string, score: nu
 	try {
 		const session = await auth();
 
-		if (!session || !session.user) throw "Unauthorized";
+		if (!session) throw "Unauthorized";
 
 		const song = await db.select().from(songs).where(eq(songs.id, songId));
 
