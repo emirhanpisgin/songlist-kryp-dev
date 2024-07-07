@@ -23,7 +23,7 @@ import { timePassed } from "@/lib/utils";
 
 export default async function Songs() {
     const session = await auth();
-    
+
     if (!session) {
         redirect("/login")
     }
@@ -122,8 +122,11 @@ function SongCard({ song }: { song: SongWithRatingAndUser }) {
                                 <img src={rating.user.image!} className="size-12 rounded-full" alt="User" />
                                 <div className="flex flex-col w-full">
                                     <div className="flex gap-2 h-min text-xl w-full">
-                                        <div className="flex-1">
+                                        <div className="flex-1 flex items-center gap-4">
                                             {rating.user.name}
+                                            <div className="text-sm flex gap-1 items-center">
+                                                <Clock className="size-5" /> {timePassed(rating.createdAt)}
+                                            </div>
                                         </div>
                                         <div className="flex items-center gap-1">
                                             <Star />
