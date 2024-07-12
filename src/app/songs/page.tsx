@@ -22,11 +22,11 @@ import { timePassed } from "@/lib/utils";
 
 
 export default async function Songs() {
-    // const session = await auth();
+    const session = await auth();
 
-    // if (!session) {
-    //     redirect("/login")
-    // }
+    if (!session) {
+        redirect("/login")
+    }
 
     const songList = await db.query.songs.findMany({
         with: {
