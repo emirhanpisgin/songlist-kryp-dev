@@ -34,8 +34,8 @@ export default function AddRatingButton({
     return (
         <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
             <DialogTrigger>
-                <div className="flex items-center gap-1">
-                    <Star /> Puanla
+                <div className="flex text-sm items-center md:text-xl gap-1">
+                    <Star className="size-4 md:size-6" /> Puanla
                 </div>
             </DialogTrigger>
             <DialogContent>

@@ -22,11 +22,11 @@ import { timePassed } from "@/lib/utils";
 
 
 export default async function Songs() {
-    const session = await auth();
+    // const session = await auth();
 
-    if (!session) {
-        redirect("/login")
-    }
+    // if (!session) {
+    //     redirect("/login")
+    // }
 
     const songList = await db.query.songs.findMany({
         with: {
@@ -66,18 +66,20 @@ function SongCard({ song }: { song: SongWithRatingAndUser }) {
     const averageRating = (song.ratings.map(rating => rating.rating).reduce((accumulator, currentValue) => accumulator + currentValue)) / song.ratings.length;
 
     return (
-        <div className="flex flex-col border p-4 rounded-lg gap-2">
+        <div className="flex flex-col border p-3 md:p-4 rounded-lg gap-2">
             <div className="flex gap-3">
-                <img src={(song.images as Image[])[1].url} alt="song" className="rounded-lg size-32" />
+                <img src={(song.images as Image[])[1].url} alt="song" className="rounded-lg size-16 md:size-32" />
                 <div className="flex justify-center flex-col w-full text-2xl font-semibold">
                     <div className="flex-1 flex justify-between">
-                        <div>
-                            {song.name}
-                            <ArtistDisplay className="text-sm" artists={song.artists} />
+                        <div className="text-lg md:text-2xl">
+                            <div className="leading-5 md:leading-none">
+                                {song.name}
+                            </div>
+                            <ArtistDisplay className="text-sm md:text-base font-normal" artists={song.artists} />
                         </div>
                         <TooltipProvider>
                             <Tooltip>
-                                <TooltipTrigger className="flex gap-1 text-xl h-min"><Star /> {averageRating.toFixed(1)}</TooltipTrigger>
+                                <TooltipTrigger className="flex gap-1 text-sm items-center md:text-xl h-min"><Star className="size-4 md:size-6" /> {averageRating.toFixed(1)}</TooltipTrigger>
                                 <TooltipContent>
                                     Ortalama Puan
                                 </TooltipContent>
@@ -85,47 +87,47 @@ function SongCard({ song }: { song: SongWithRatingAndUser }) {
                         </TooltipProvider>
                     </div>
                     <div className="flex text-lg w-full justify-between">
-                        <Link href={song.uri} className="flex gap-1 items-center">
-                            <SpotifyIcon className="size-7" /> Spotify&apos;da dinle
+                        <Link href={song.uri} className="flex gap-1 items-center text-xs md:text-xl">
+                            <SpotifyIcon className="size-5 md:size-7" /> Spotify&apos;da dinle
                         </Link>
                         <AddRatingButton song={song} />
                     </div>
                 </div>
             </div>
-            <Separator className="my-2" />
+            <Separator className="my-1 md:my-2" />
             <div className="flex gap-3">
-                <img src={author.image!} className="size-12 rounded-full" alt="User" />
+                <img src={author.image!} className="size-9 md:size-12 rounded-full" alt="User" />
                 <div className="flex flex-col w-full">
-                    <div className="flex gap-2 h-min text-xl w-full">
+                    <div className="flex gap-2 h-min text-base md:text-xl w-full">
                         <div className="flex-1 flex items-center gap-4">
                             {author.name}
                             <div className="text-sm flex gap-1 items-center">
-                                <Clock className="size-5" /> {timePassed(initialRating.createdAt)}
+                                <Clock className="size-4 md:size-5" /> {timePassed(initialRating.createdAt)}
                             </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                            <Star />
+                        <div className="flex text-sm md:text-xl items-center gap-1">
+                            <Star className="size-4 md:size-6" />
                             {initialRating.rating}
                         </div>
                     </div>
-                    <div className="italic">
+                    <div className="italic text-sm md:text-base">
                         &quot;{initialRating.comment}&quot;
                     </div>
                 </div>
             </div>
             {song.ratings.length > 1 && <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
-                    <AccordionTrigger>Puanlar</AccordionTrigger>
+                    <AccordionTrigger className="py-2 md:py-4">Puanlar</AccordionTrigger>
                     <AccordionContent className="flex flex-col gap-2">
                         {song.ratings.filter(rating => rating.id !== initialRating.id).map((rating) => (
                             <div className="flex gap-3" key={rating.id}>
-                                <img src={rating.user.image!} className="size-12 rounded-full" alt="User" />
+                                <img src={rating.user.image!} className="size-9 md:size-12 rounded-full" alt="User" />
                                 <div className="flex flex-col w-full">
-                                    <div className="flex gap-2 h-min text-xl w-full">
+                                    <div className="flex gap-2 h-min text-base md:text-xl w-full">
                                         <div className="flex-1 flex items-center gap-4">
                                             {rating.user.name}
                                             <div className="text-sm flex gap-1 items-center">
-                                                <Clock className="size-5" /> {timePassed(rating.createdAt)}
+                                                <Clock className="size-4 md:size-5" /> {timePassed(rating.createdAt)}
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-1">
