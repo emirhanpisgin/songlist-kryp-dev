@@ -130,8 +130,8 @@ function SongCard({ song }: { song: SongWithRatingAndUser }) {
                                                 <Clock className="size-4 md:size-5" /> {timePassed(rating.createdAt)}
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-1">
-                                            <Star />
+                                        <div className="flex items-center text-sm md:text-xl gap-1">
+                                            <Star className="size-4 md:size-6" />
                                             {rating.rating}
                                         </div>
                                     </div>
