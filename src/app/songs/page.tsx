@@ -1,5 +1,4 @@
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import { Input } from "@/components/ui/input";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import RateSongButton from "./rate-song-button";

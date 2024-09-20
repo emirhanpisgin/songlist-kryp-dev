@@ -1,10 +1,9 @@
-import { ListMusic, LogOut, MessageSquare, Settings, UserRound } from "lucide-react";
+import { LogOut, UserRound } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Session } from "next-auth";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
-import Link from "next/link";
 
 export default function ProfileButton({
     data
